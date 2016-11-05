@@ -156,7 +156,10 @@ open class NextGrowingTextView: UIScrollView {
         self.textView.isScrollEnabled = false
         self.textView.font = UIFont.systemFont(ofSize: 16)
         self.textView.backgroundColor = UIColor.clear
+        self.textView.showsVerticalScrollIndicator = false
         self.addSubview(textView)
+        self.delegate = self
+        self.showsVerticalScrollIndicator = false
         self.minHeight = simulateHeight(1)
         self.maxNumberOfLines = 3
     }
@@ -382,6 +385,7 @@ extension NextGrowingTextView {
         set { self.textView.indicatorStyle = newValue }
     }
 
+    /*
     override open var showsHorizontalScrollIndicator: Bool {
         get { return self.textView.showsHorizontalScrollIndicator }
         set { self.textView.showsHorizontalScrollIndicator = newValue }
@@ -391,6 +395,7 @@ extension NextGrowingTextView {
         get { return self.textView.showsVerticalScrollIndicator }
         set { self.textView.showsVerticalScrollIndicator = newValue }
     }
+    */
 }
 
 extension NextGrowingTextView: UITextViewDelegate {
@@ -432,5 +437,14 @@ extension NextGrowingTextView: UITextViewDelegate {
         delegates.textViewDidChange(self)
 
         fitToScrollView()
+    }
+}
+
+extension NextGrowingTextView: UIScrollViewDelegate {
+    public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        self.showsVerticalScrollIndicator = true
+    }
+    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        self.showsVerticalScrollIndicator = false
     }
 }
